@@ -1,0 +1,84 @@
+{% extends 'layouts/base.html' %}
+{% load static custom_tags %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 d-flex align-items-center justify-content-center bg-light">
+            <div class="main-text m-5 text-center">
+                <h1>Открывайте для себя научные знания и оставайтесь на связи с миром науки</h1>
+                <div class="reg-button">
+                    <a href="{% url 'registration' %}">
+                    <button class="btn btn-rg btn-lg btn-block text-white">Присоединиться</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="main-img">
+                <img src="{% static 'images/main1.jpeg' %}" alt="" class="img-fluid">
+            </div>
+        </div>
+    </div>
+    <div class="row p-5">
+        <div class="col-md-6">
+            <div class="discover-img d-flex align-items-center justify-content-center">
+                <img src="{% static 'images/main2.svg' %}" alt="" class="img-fluid discover-img">
+            </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="discover-text m-5 text-center">
+                <h1>Поиск работ</h1>
+                <p>Получите доступ к более чем 135 миллионам страниц публикаций и будьте в курсе того, что происходит в вашей области.</p>
+                <div class="discover-search">
+                    <form role="search" method="get" action="{% url 'publications' %}">
+                        <input type="text" class="form-control" placeholder="{% if request.GET.search %}{{request.GET.search}}{% else %}Поиск...{% endif %}" name="search" aria-label="Search" style="height: 60px">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-5">
+        <div class="col-md-6">
+            <div class="topic-text m-5 text-center">
+                <h1>Общайтесь со своим научным сообществом</h1>
+                <p>Делитесь своими исследованиями, сотрудничайте со своими коллегами и получайте поддержку, необходимую для продвижения по карьерной лестнице.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="topic-list m-5">
+                <p class="text-secondary">Категории работ</p>
+                {% get_all_categories as categories %}
+                {% for category in categories %}
+                <a href="{{category.get_absolute_url}}" class="text-decoration-none">
+                <button class="btn btn-outline-rg m-2 btn-lg" style="border-radius: 20px;">{{category}}</button>
+                </a>
+                {% if forloop.counter|divisibleby:2 %}
+                <br>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <hr class="m-5">
+    <div class="row m-5">
+        <div class="col-md-6 d-flex align-items-center justify-content-center text-center">
+            <div class="topic-list">
+                <h1>Недавние публикации</h1>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="topic-text m-5">
+                {% for publication in publications %}
+                <div class="m-2">
+                    <h5>{{publication.name}}</h5>
+                    <p>{{publication.abstract|truncatewords:9}}</p>
+                    <a href="{{publication.get_absolute_url}}" class="text-decoration-none">
+                    <button class="btn btn-outline-rg">Прочитать</button>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

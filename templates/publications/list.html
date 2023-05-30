@@ -1,0 +1,40 @@
+{% load custom_tags %}
+
+
+<div class="container">
+	{% for publication in publications %}
+		<a href="{{publication.get_absolute_url}}" class="text-decoration-none text-dark">
+			<div class="card ">
+				<div class="card-header">
+					{{ forloop.counter }}.
+					<span class="font-weight-bold">{{ publication.category }}.</span>
+					<span class="text-muted">Автор: <a href="{{ publication.author.get_absolute_url }}">{{ publication.author }}</a> | {{ publication.published }}   </span>
+					{% if publication.mark %}
+						{% include 'publications/rating.html' with publication=publication %}
+					{% endif %}
+					{% if request.user.is_reader %}
+						{% check_publication_in_reading request.user publication as is_publication_in_reading %}
+						{% if is_publication_in_reading %}
+							<a href="{% url 'remove_from_reading' publication.pk %}" class="text-decoration-none position-absolute top-0 end-0 text-danger">
+									Удалить из списка для чтения
+								</a>
+						{% else %}
+							<a href="{% url 'add_to_reading' publication.pk %}" class="text-decoration-none position-absolute top-0 end-0 text-success">
+								В список для чтения
+							</a>
+						{% endif %}
+					{% endif %}
+				</div>
+				<div class="card-body">
+					{{ publication.name }}
+					<p>
+						{% for tag in publication.tags.all %}
+							#{{tag.name}}
+						{% endfor %}
+					</p>
+				</div>
+			</div>
+		</a>
+		<br>
+		{% endfor %}
+</div>

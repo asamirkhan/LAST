@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  web:
+    build: ./
+    command: ./start.sh
+    restart: always
+    expose:
+      - 8000
+    ports:
+      - "8000:8000"
+    environment:
+      REDIS_URL: redis://redis:6379
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_PASSWORD: admin
+      DJANGO_SUPERUSER_EMAIL: admin@gmail.com
+      DB_HOST: db
+      DB_NAME: science_db
+      DB_USER: science_user
+      DB_PASSWORD: password
+      DB_PORT: 5432
+    depends_on:
+      - db
+  db:
+    image: postgres:14-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: science_db
+      POSTGRES_USER: science_user
+      POSTGRES_PASSWORD: password
+  redis:
+    restart: always
+    image: redis
+    expose:
+        - 6379
+        
+volumes:
+  pgdata:

@@ -1,0 +1,69 @@
+{% load static %}
+<header class="p-3 mb-3 border-bottom">
+	<div class="container">
+		<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+		<a href="{% url 'main' %}" class="nav-link px-2 link-body-emphasis"><h2 class="text-rg">Science</h2></a>
+		<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+			<li></li>
+			<li><a href="{% url 'categories' %}" class="nav-link px-2 link-body-emphasis text-rg m-2">Категории</a></li>
+            <li><a href="{% url 'author_list' %}" class="nav-link px-2 link-body-emphasis text-rg m-2">Авторы</a></li>
+		</ul>
+		<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" method="get" action="{% url 'publications' %}">
+			<input type="text" class="form-control" placeholder=
+			{% if request.GET.search %}
+			"{{request.GET.search}}"
+			{% else %}
+			"Поиск..."
+			{% endif %}
+			 name="search" aria-label="Search">
+		</form>
+
+		<div class="dropdown text-end">
+			<a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+			{% if request.user.is_superuser and request.user.is_accepted %}
+				<img src="{% static 'images/default-user-image.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+			{% elif request.user.get_role == 'Автор' %}
+				<img src="{% static 'images/academic-researcher-color.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+			{% elif request.user.get_role == 'Рецензент' %}
+				<img src="{% static 'images/corporate-researcher-color.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+			{% elif request.user.get_role == 'Читатель' %}
+				<img src="{% static 'images/just-interested-color.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+			{% else %}
+				<img src="{% static 'images/default-user-image.png' %}" alt="mdo" width="32" height="32" class="rounded-circle">
+			{% endif %}
+			
+
+			</a>
+			<ul class="dropdown-menu text-small" style="">
+			{% if request.user.is_authenticated %}
+				{% if request.user.is_superuser and request.user.is_accepted %}
+					<li class="dropdown-item">{{request.user.username}} ("Администратор")</li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="{% url 'inactive_reviewers' %}">Новые рецензенты</a></li>
+                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">Админ панель</a></li>
+				{% else %}
+					<li class="dropdown-item">{{request.user.username}} ({{request.user.get_role}})</li>
+					<li><hr class="dropdown-divider"></li>
+					{% if request.user.get_role == 'Автор' %}
+                        <li><a class="dropdown-item" href="{% url 'author_detail' request.user.pk %}">Профиль</a></li>
+						<li><a class="dropdown-item" href="{% url 'create' %}">Новая публикация...</a></li>
+						<li><a class="dropdown-item" href="{% url 'mine' %}">Мои публикации</a></li>
+					{% elif request.user.get_role == 'Читатель' %}
+						<li><a class="dropdown-item" href="{% url 'for_reading' %}">Список для чтения</a></li>
+					{% elif request.user.get_role == 'Рецензент' %}
+						<li><a class="dropdown-item" href="{% url 'unchecked' %}">Публикации на проверку</a></li>
+						<li><a class="dropdown-item" href="{% url 'noreviewer' %}">Публикации без рецензента</a></li>
+					{% endif %}
+				{% endif %}
+				<li><hr class="dropdown-divider"></li>
+				<li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+			{% else %}
+				<li><a class="dropdown-item" href="{% url 'registration' %}">Зарегистрироваться</a></li>
+				<li><hr class="dropdown-divider"></li>
+				<li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
+			{% endif %}
+			</ul>
+		</div>
+		</div>
+	</div>
+</header>

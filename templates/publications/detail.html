@@ -1,0 +1,180 @@
+{% extends 'layouts/base.html' %}
+{% load static custom_tags %}
+{% block content %}
+<div class="container-fluid m-5">
+    <div class="row g-5">
+        <div class="col 
+            {% if not request.GET.tab == 'tags' %}
+            col-md-6 col-lg-7
+            {% endif %}
+            ">
+            {% if edit_form.errors %}
+            {% for field in edit_form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <p class="text-center"><strong>{{field.label}} {{ error|escape }}</strong></p>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in edit_form.non_field_errors %}
+            <div class="alert alert-danger">
+                <p class="text-center"><strong>{{ error|escape }}</strong></p>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="bg-light p-3 rounded">
+                <ul class="nav nav-pills nav-fill mb-3">
+                    <li class="nav-item">
+                        <button class="tablinks btn btn-outline-rg" onclick="switchTab('desc', true)">Описание</button>
+                    </li>
+                    {% if not request.user == publication.author %}
+                    <li class="nav-item">
+                        <button class="tablinks btn btn-outline-rg" onclick="switchTab('abstract', true)">Аннотация</button>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <button class="tablinks btn btn-outline-rg" onclick="switchTab('comments', true)">Комментарии</button>
+                    </li>
+                    {% if request.user == publication.author %}
+                    <li class="nav-item">
+                        <button class="tablinks btn btn-outline-rg" onclick="switchTab('tags', true)">Настроить Тэги</button>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div id="desc" class="tab">
+                    {% if not request.user == publication.author %}
+							<div class="row">
+								<div class="col">
+									<h1>{{publication.name}}</h1>
+									<p class="text-sec">{{publication.published}} </p>
+									<p>Автор: {{publication.author}}</p>
+									<p>Категория: {{publication.category}}</p>
+									<p>
+										{% for tag in publication.tags.all%}
+										#{{tag}}
+										{% endfor %}
+									</p>
+									
+								</div>
+								<div class="col text-center">
+									<a href="/media/{{publication.document}}" target="_blank"  class="text-decoration-none te text-rg">
+									<p><img src="{% static 'images/doc.jpg' %}" alt="" width="50%"></p>
+									<p>
+										Прочитать
+									</p>
+									</a>
+									{% if request.user.is_reader %}
+										{% check_publication_in_reading request.user publication as is_publication_in_reading %}
+										{% if is_publication_in_reading %}
+											<a href="{% url 'remove_from_reading' publication.pk %}" class="text-decoration-none text-danger">
+											Удалить из списка для чтения
+											</a>
+										{% else %}
+											<a href="{% url 'add_to_reading' publication.pk %}" class="text-decoration-none text-success">
+											В список для чтения
+											</a>
+										{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						
+						
+						
+                    {% else %}
+						<form action="{% url 'edit' publication.pk %}" method="post" enctype="multipart/form-data" >
+							{% csrf_token %}
+							{{edit_form.as_p}}
+							<button class="btn btn-info w-100" type="submit" onclick="return confirm('Обновить данные?')">Обновить</button>
+						</form>
+						<form method="POST" action="{% url 'delete' publication.pk %}">
+							{% csrf_token %}
+							<button type="submit" class="btn btn-danger w-100" onclick="return confirm('Удалить публикацию?')">Удалить</button>
+						</form>
+                    {% endif %}
+                </div>
+				
+                <div id="abstract" class="tab">
+                    <p>Аннотация: {{publication.abstract}}</p>
+                </div>
+                <div id="comments" class="tab">
+                    <div class="bg-light">
+                        <hr>
+                        {% for commens_by in comments %}
+                        {% for comment in commens_by %}
+                        <div>
+                            <p>Автор комментария : {{comment.author}} ({{comment.author.get_role}})</p>
+                            <p>{{comment.text}}</p>
+                            <p>Создан : {{comment.created}}</p>
+                            {% if comment.author == request.user %}
+                            <form action="{% url 'delete_comment' comment.pk publication.pk %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Удалить комментарий?')">Удалить</button>
+                            </form>
+                            {% endif %}
+                            <hr>
+                        </div>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% if request.user.is_authenticated %}
+                    <form action="{% url 'add_comment' publication.pk %}" method="post">
+                        {% csrf_token %}
+                        <h4 class="text-center">Оставить комментарий</h4>
+                        {{comment_form.text}}
+                        <button class="btn btn-success w-100" type="submit">Отправить</button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div id="tags" class="tab">
+                    <hr>
+                    {% include 'publications/tags.html' with publication=publication tags_form=tags_form %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 order-md-last text-center">
+            {% if request.user == publication.reviewer %}
+            <h4 class="mb-3 text-center">
+                <span class="text-center">Оценить</span>
+            </h4>
+            <form action="{{ publication.get_absolute_url }}" method="post">
+                {% csrf_token %}
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <span class="rating">
+                            {% for k, v in form.fields.mark.choices %}
+                            <input id="rating{{ v }}" type="radio" name="mark" value="{{ k }}" {% if v == publication.mark %}checked{% endif %}> 
+                            <label for="rating{{ v }}"></label>
+                            {% endfor %}
+                            </span>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            Статус: {{form.status}} 
+                        </div>
+                    </li>
+                </ul>
+                <div class="input-group">
+                    <button class="btn btn-secondary w-100" type="submit">Оценить</button>
+                </div>
+            </form>
+            <br>
+            {% endif %}
+            {% if not request.user == publication.reviewer and not request.GET.tab == "tags"%}
+            {% include 'publications/detail_rating.html' with publication=publication %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    console.log({{request.GET.tab}});
+    if ("{{request.GET.tab}}") {
+    switchTab("{{request.GET.tab}}");
+    } else {
+    switchTab("desc");
+       	} 
+    }); 
+</script>
+{% endblock content %}

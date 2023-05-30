@@ -1,0 +1,21 @@
+{% load static %}
+
+<footer class="footer">
+	<div class="bg-light text-center">
+		<!-- <img class="footer-img rounded" src="{% static 'images/footer-1.jpeg' %}" alt="">
+		<img class="footer-img rounded" src="{% static 'images/footer-2.jpeg' %}" alt=""> -->
+		<hr>
+		<div class="links">
+			<h4 class="text-rg">Подписывайтесь на нас</h4>
+			<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="fa fa-youtube"></a>
+			<a href="#" class="fa fa-facebook"></a>
+			<a href="#" class="fa fa-twitter"></a>
+			<a href="#" class="fa fa-instagram"></a>
+		</div>
+		<p><span id="year" class="text-secondary"></span></p>
+        
+<script>
+	document.querySelector("#year").textContent = '©' +  new Date().getFullYear();
+</script>
+    
+</footer>

@@ -1,0 +1,6 @@
+<span class="rating">
+	{% for i in '0123456789'|make_list reversed %}
+		<input type="radio" {% if i|add:1 == publication.mark %}checked{% endif %} disabled "> 
+		<label for="rating{{ i|add:1 }}""></label>
+	{% endfor %}
+</span>

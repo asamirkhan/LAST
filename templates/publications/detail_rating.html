@@ -1,0 +1,17 @@
+{% load static custom_tags %}
+
+<p class="position-relative">
+<h4 class="mb-3 text-center">
+    <span class="text-center">Оценка</span>
+</h4>
+
+{% include 'publications/rating.html' with publication=publication %}
+
+</p>
+{% if publication.get_status == False %}
+	<p>Статус: <span class="text-danger">Отклонено</span></p>
+{% elif publication.get_status == True %}
+	<p>Статус: <span class="text-success">Подтверждено</span></p>
+{% else %}
+	<p>Статус: Проверяеться</p>
+{% endif %}

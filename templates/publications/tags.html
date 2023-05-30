@@ -1,0 +1,27 @@
+<div class="mx-auto col-11 ">
+    <div>
+		<div class="text-center justify-content-between ">
+        <h4 >
+            <span>Тэги публикации</span>
+        </h4>
+        <p>
+            {% for tag in publication.tags.all%}
+            #{{tag}}
+            {% endfor %}
+        </p>
+		</div>
+        <fieldset class=""> 
+            <form action="{% url 'add_tag' publication.pk %}" method="POST" >
+                {% csrf_token %}
+                <p>{{tags_form.tags}}</p>
+                <p>
+                </p>
+                    <button class="btn btn-secondary w-50" type="submit">Обновить</button>
+            </form>
+            <button class="btn btn-success w-50" onclick="createTag({{publication.pk}});" id="create_tag_button">Создать тэг</button>
+        </fieldset>
+        <form action="{% url 'create_tag' publication.pk %}" method="POST" id="create_new_tag_form">
+            {% csrf_token %}
+        </form>
+    </div>
+</div>

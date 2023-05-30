@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+{% load static custom_tags %}
+{% block content %}
+<div class="container-fluid p-3 p-md-5">
+    <div class="bg-light row p-3 p-md-5 rounded">
+        <div class="col-12 col-md-8">
+            {% if author.avatar %}
+            <img src="/media/{{ author.avatar }}" alt="" width="200px" class="rounded mb-3">
+            {% else %}
+            <img src="{% static 'images/default-user-image.png' %}" alt="" width="200px" class="rounded mb-3">
+            {% endif %}
+            <h2 class="d-inline">{{ author.username }}</h2>
+            {% if author.about_me %}
+            <p class="w-75 text-secondary">{{ author.about_me }}</p>
+            {% endif %}
+        </div>
+        <div class="col-12 col-md-4 mt-md-0 mt-3 text-center">
+            <h2 class="">Статистика</h2>
+            <p>Средняя оценка: {{ avg_mark.avg_mark|default_if_none:"У автора нет публикаций" }}</p>
+            <p>Количество публикаций: {{ publications.count }}</p>
+            {% if request.user == author %}
+            <a href="{% url 'author_edit' author.pk %}">
+                <button class="btn btn-outline-rg">Редактировать профиль</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="text-center p-5">
+        <h1 class="text-rg">Публикации</h1>
+    </div>
+    <div class="bg-light p-5 rounded">
+        {% include 'publications/list.html' %}
+    </div>
+    <br><br>
+</div>
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% load static %}
+<div class="m-4">
+    <h2 class="text-center ">Зарегистрироваться как </h2>
+</div>
+<div class="bg-light">
+        <div class="">
+            <a href="{% url 'registration' %}?user_type=author" class="text-decoration-none text-dark ">
+                <div class="user_type_card">
+                    <div>
+                        <img src="{% static 'images/academic-researcher-color.png' %}" alt="" width="15%">
+                    </div>
+                    <div>
+                        <h3>Автор</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="">
+            <a href="{% url 'registration' %}?user_type=reviewer" class="text-decoration-none text-dark">
+                <div class="user_type_card">
+                    <div>
+                        <img src="{% static 'images/corporate-researcher-color.png' %}" alt="" width="15%">
+                    </div>
+                    <div>
+                        <h2>Рецензент</h2>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="">
+            <a href="{% url 'registration' %}?user_type=reader" class="text-decoration-none text-dark">
+                <div class="user_type_card">
+                    <div>
+                        <img src="{% static 'images/just-interested-color.png' %}" alt="" width="15%">
+                    </div>
+                    <div>
+                        <h2>Читатель</h2>
+                    </div>
+                </div>
+            </a>
+        </div>
+</div>

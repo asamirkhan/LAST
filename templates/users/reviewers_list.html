@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+<div class="container">
+	<h2 class="text-center">Новые рецензенты</h2>
+	<br>
+	{% for reviewer in reviewers %}
+        <div class="card ">
+            <div class="card-header">
+                {{ forloop.counter }}.
+                <span class="font-weight-bold">{{ reviewer.username }}.</span>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'inactive_reviewers' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ reviewer.id }}" name="id">
+                    <button type="submit" class="btn btn-outline-rg">Потвердить</button>
+                </form>
+            </div>
+        </div>
+		<br>
+	{% endfor %}
+</div>
+{% endblock content %}
+
+

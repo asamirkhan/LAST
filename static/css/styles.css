@@ -1,0 +1,212 @@
+.rating {
+	vertical-align: bottom;
+	display: inline-block;
+}
+
+.rating>input {
+	display: none;
+	opacity: 0;
+	margin-right: -100%;
+}
+
+.rating>label {
+	position: relative;
+	display: block;
+	float: right;
+	background: url('../images/star-off-big.png');
+	background-size: 30px 30px;
+}
+
+.rating>label:before {
+	display: block;
+	opacity: 0;
+	content: '';
+	width: 30px;
+	height: 30px;
+	background: url('../images/star-on-big.png');
+	background-size: 30px 30px;
+	transition: opacity 0.2s linear;
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before,
+.rating:not(:hover)> :checked~label:before {
+	opacity: 1;
+}
+
+.user_type_card {
+	background-color: #f1f1f1;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	padding: 20px;
+	width: 400px;
+	margin: auto;
+	margin-top: 25px;
+}
+
+
+.tab {
+	display: none;
+}
+/* Style the buttons that are used to open the tab content */
+/* .tab button {
+	background-color: inherit;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+} */
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+	background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+	background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+}
+
+#id_tags_remove_all_link, #id_tags_add_all_link, .help-icon {
+		opacity: 0;
+	}
+
+#id_tags_to {
+	border-top: 1px solid;
+}
+
+.btn-rg,
+.btn-rg:hover,
+.btn-rg:active,
+.btn-rg:visited {
+	background-color: #00ABC2 !important;
+}
+.btn-outline-rg,
+.btn-outline-rg:hover,
+.btn-outline-rg:active,
+.btn-outline-rg:visited {
+	--bs-btn-color: #00ABC2;
+	--bs-btn-border-color: #00ABC2;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-hover-bg: #00ABC2;
+	--bs-btn-hover-border-color: #00ABC2;
+	--bs-btn-focus-shadow-rgb: 33, 37, 41;
+	--bs-btn-active-color: #fff;
+	--bs-btn-active-bg: #00ABC2;
+	--bs-btn-active-border-color: #00ABC2;
+	--bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	--bs-btn-disabled-color: #00ABC2;
+	--bs-btn-disabled-bg: transparent;
+	--bs-btn-disabled-border-color: #00ABC2;
+	--bs-gradient: none;
+}
+
+.discover-img {
+	height: 50vw;
+	min-width: 180px;
+	min-height: 180px;
+	max-width: 400px;
+	max-height: 400px;
+	background-size: cover;
+}
+
+.text-rg {
+	color: #00ABC2;
+}
+
+@media (min-width: 576px) {
+	.text-xs-center {
+		text-align: center;
+	}
+}
+
+@media (min-width: 768px) {
+	.text-sm-left {
+		text-align: left;
+	}
+}
+
+@media (min-width: 992px) {
+	.text-md-right {
+		text-align: right;
+	}
+}
+
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+.footer {
+	position: absolute;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	margin-top: 50px;
+	bottom: 0;
+}
+
+.container {
+	width: auto;
+}
+
+.footer-img {
+	max-width: 250px;
+	max-height: 170px;
+	width: 70%;
+	margin: 30px;
+}
+
+.fa {
+    padding: 20px;
+    font-size: 40px;
+    width: 55px;
+    border-radius: 50%;
+    text-decoration: none;
+    margin: 5px 2px;
+}
+
+.fa:hover {
+	opacity: 0.7;
+}
+
+.fa-youtube {
+	background: #bb0000;
+	color: white;
+}
+
+.fa-instagram {
+	background: #f09433;
+	background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+	background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+	background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
+	color: white;
+}
+
+.fa-facebook {
+	background: #3B5998;
+	color: white;
+}
+
+.fa-twitter {
+	background: #55ACEE;
+	color: white;
+}
+
+.avatar {
+  margin: 5px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}

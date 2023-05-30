@@ -1,0 +1,10 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    {% if request.user.is_accepted %}
+	    {% include 'publications/list.html' %}
+    {% elif not request.user.is_accepted and request.user.is_reviewer %}
+        <h2 class="text-center">Ваше заявление подано, ожидайте ответа</h2>
+    {% endif %}
+{% endblock %}

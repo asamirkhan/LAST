@@ -1,0 +1,45 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<div class="container text-center" >
+	{% if form.errors %}
+		{% for field in form %}
+			{% for error in field.errors %}
+			<div class="alert alert-danger">
+				<p class="text-center"><strong>{{ error|escape }}</strong></p>
+			</div>
+			{% endfor %}
+		{% endfor %}
+		{% for error in form.non_field_errors %}
+			<div class="alert alert-danger">
+				<p class="text-center"><strong>{{ error|escape }}</strong></p>
+			</div>
+		{% endfor %}
+    {% endif %}
+	{% if request.GET.user_type %}
+    	<main class="form-signin">
+			<form action="{% url 'registration' %}" method="post">
+				{% csrf_token %}
+				<h1 class="h3 mb-3 fw-normal">Регистрация</h1>
+				<div class="form-floating">
+					{{ form.username }}
+					<label for="floatingInput">Имя пользователя</label>
+				</div>
+				<div class="form-floating">
+					{{ form.email }}
+					<label for="floatingEmail">Email</label>
+				</div>
+				<div class="form-floating">
+					{{ form.password }}
+					<label for="floatingPassword">Пароль</label>
+				</div>
+				<input type="hidden" name="user_type" value={{request.GET.user_type}}>
+				<br>
+				<button class="w-100 btn btn-lg btn-dark" type="submit" onclick="return confirm('Подтвердите регистрацию')">Зарегистрироваться</button>
+			</form>
+		</main>
+	{% else %}
+		{% include 'registration/user_type.html' %}
+	{% endif %}
+</div>
+
+{% endblock %}

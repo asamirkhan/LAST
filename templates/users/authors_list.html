@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+<div class="container">
+	<h2 class="text-center">Авторы</h2>
+	<br>
+	{% for author in authors %}
+		<a href="{{author.get_absolute_url}}" class="text-decoration-none">
+			<div class="card ">
+				<div class="card-header">
+					{{ forloop.counter }}.
+					<span class="font-weight-bold">{{ author.username }}.</span>
+					<span class="text-muted">Количесто публикаций: {{ author.publications_count }}</span>
+				</div>
+                <div class="card-body">
+					Средняя оценка автора: {{ author.avg_mark }}
+				</div>
+			</div>
+		</a>
+		<br>
+	{% endfor %}
+</div>
+{% endblock content %}
+
+
